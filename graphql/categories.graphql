@@ -1,0 +1,20 @@
+query GetCategories {
+   categories(filters: {}) {
+      items {
+        id
+        name
+        product_count
+      }
+    }
+}
+
+query GetSubCategories($parentCategoryId: String!) {
+  categories(filters: { parent_id: { eq: $parentCategoryId } }) {
+    items {
+      id
+      name
+      product_count
+    }
+  }
+}
+

@@ -1,137 +1,168 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import headerLogo from "../../../public/headerLogo.webp";
-import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
-import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
-import SubCategories from './SubCategories/SubCategories';
-import Categories from '../Categories/Categories';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import SubCategories from "./SubCategories/SubCategories";
+import Categories from "./Categories/Categories";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { client } from "@/lib/graphqlClient";
+import { GET_CATEGORIES } from "@/lib/queries";
+import fetchCategories from "@/lib/fetchCategories";
 
 export default function Header() {
+  const theme = useTheme();
+  const mediaAdapter = useMediaQuery(theme.breakpoints.down("md"));
+  const [showSearchInput, setShowSearchInput] = useState(false);
+  const [showCategoriesBar, setShowCategoriesBar] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [showSubCatBar, setShowSubCatBar] = useState(false);
+  const router = useRouter();
 
-    const theme = useTheme();
-    const mediaAdapter = useMediaQuery(theme.breakpoints.down("md"));
-    const [showSearchInput, setShowSearchInput] = useState(false);
-    const [showCategoriesBar, setShowCategoriesBar] = useState(false);
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-    const [showSubCatBar, setShowSubCatBar] = useState(false);
-    const router = useRouter();
+  const [categories, setCategories] = useState([]);
 
-    const categories = [
-        { name: "Tires", prod: "20" },
-        { name: "Accessories", prod: "12" },
-        { name: "Brands", prod: "23" },
-        { name: "Offers", prod: "33" },
-    ];
+  useEffect(() => {
+    async function fetchCat() {
+      try {
+        const res = await fetch("/api/categories");
+        const json = await res.json();
 
-    return (
-        <div>
+        console.log("Categories:", json);
 
-            {mediaAdapter ? (
-                <div className='flex flex-col '>
-                    <div className='flex justify-between items-center h-16 px-2 bg-white z-[1000]'>
+        const data: any = json.categories.items.slice(17, 20);
 
-                        <button onClick={() => setShowCategoriesBar((showCategoriesBar) => !showCategoriesBar)}>
-                            <MenuOutlinedIcon style={{ color: '#231f20' }} />
-                        </button>
+        console.log("Categories:", data);
+        setCategories(data);
+      } catch (error) {
+        console.error("fetching categories failed", error);
+      }
+    }
+    fetchCat();
 
-                        <button onClick={() => setShowSearchInput((showSearchInput) => !showSearchInput)}>
-                            <SearchOutlinedIcon style={{ color: '#231f20' }} />
-                        </button>
+    async function fetchSubCat(id: string) {
+      try {
+        const res = await fetch(`/api/subCategories?parentCategoryId=${id}`);
+        const json = await res.json();
+     
+        console.log("subCategories:", json);
 
+        //const data: any = json.categories.items.slice(0, 2);
 
-                        <Image
-                            src={headerLogo}
-                            alt="Header Logo"
-                            width={150}
-                            onClick={() => router.push('/')}
-                        />
+        //console.log("SubCategories:", data);
+      } catch (error) {
+        console.error("fetching categories failed", error);
+      }
+    }
+    fetchSubCat("108");
+  }, []);
 
+  return (
+    <div>
+      {mediaAdapter ? (
+        <div className="flex flex-col ">
+          <div className="flex justify-between items-center h-16 px-2 bg-white z-[1000]">
+            <button
+              onClick={() =>
+                setShowCategoriesBar((showCategoriesBar) => !showCategoriesBar)
+              }
+            >
+              <MenuOutlinedIcon style={{ color: "#231f20" }} />
+            </button>
 
-                        <div className='flex items-center gap-4'>
-                            <PersonOutlineOutlinedIcon style={{ color: '#231f20' }} />
-                            <FavoriteBorderOutlinedIcon style={{ color: '#231f20' }} />
-                            <ShoppingCartOutlinedIcon style={{ color: '#231f20' }} />
-                        </div>
+            <button
+              onClick={() =>
+                setShowSearchInput((showSearchInput) => !showSearchInput)
+              }
+            >
+              <SearchOutlinedIcon style={{ color: "#231f20" }} />
+            </button>
 
-                    </div>
+            <Image
+              src={headerLogo}
+              alt="Header Logo"
+              width={150}
+              onClick={() => router.push("/")}
+            />
 
-                    {showSearchInput && (
-                        <input
-                            type="text"
-                            placeholder="Search Tires & Accessories"
-                            className=" bg-white px-4 py-2 w-full outline-none text-gray-800 z-[1000]"
-                        />
-                    )}
+            <div className="flex items-center gap-4">
+              <PersonOutlineOutlinedIcon style={{ color: "#231f20" }} />
+              <FavoriteBorderOutlinedIcon style={{ color: "#231f20" }} />
+              <ShoppingCartOutlinedIcon style={{ color: "#231f20" }} />
+            </div>
+          </div>
 
-                    {showCategoriesBar && (
-                        <Categories
-                            categories={categories}
-                            setSelectedCategory={setSelectedCategory}
-                            setShowSubCatBar={setShowSubCatBar}
-                        />
-                    )}
+          {showSearchInput && (
+            <input
+              type="text"
+              placeholder="Search Tires & Accessories"
+              className=" bg-white px-4 py-2 w-full outline-none text-gray-800 z-[1000]"
+            />
+          )}
 
-                    {selectedCategory && showSubCatBar && (
-                        <SubCategories
-                            category={selectedCategory}
-                            setShowSubCatBar={setShowSubCatBar}
-                        />
-                    )}
-                </div>
+          {showCategoriesBar && (
+            <Categories
+              categories={categories}
+              setSelectedCategory={setSelectedCategory}
+              setShowSubCatBar={setShowSubCatBar}
+            />
+          )}
 
-            ) : (
-                <div className='flex flex-col '>
-                    <div className='flex justify-between items-center h-16 md:px-10 px-2 bg-white z-[1000]'>
-                        <Image src={headerLogo} alt="headerLogo" className="" />
-
-                        <Box
-                            display={"flex"}
-                            alignItems="center"
-                            gap={2}
-                            border={"1px solid #231f20"}
-                            borderRadius={1}
-                            p={1}
-                            width={"400px"}
-                        >
-                            <SearchOutlinedIcon style={{ color: '#231f20' }} />
-                            <input
-                                type="text"
-                                placeholder="Search Tires & Accessories"
-                                className="w-full bg-transparent outline-none text-gray-800"
-                            />
-                        </Box>
-
-                        <div className='flex items-center gap-4'>
-                            <PersonOutlineOutlinedIcon style={{ color: '#231f20' }} />
-                            <FavoriteBorderOutlinedIcon style={{ color: '#231f20' }} />
-                            <ShoppingCartOutlinedIcon style={{ color: '#231f20' }} />
-                        </div>
-                    </div>
-
-                    <Categories
-                        categories={categories}
-                        setSelectedCategory={setSelectedCategory}
-                        setShowSubCatBar={setShowSubCatBar}
-                    />
-
-                    {selectedCategory && showSubCatBar && (
-                        <SubCategories
-                            category={selectedCategory}
-                            setShowSubCatBar={setShowSubCatBar}
-                        />
-                    )}
-
-                </div>
-
-            )}
-
+          {/* {selectedCategory && showSubCatBar && (
+            <SubCategories
+              category={selectedCategory}
+              setShowSubCatBar={setShowSubCatBar}
+            />
+          )} */}
         </div>
+      ) : (
+        <div className="flex flex-col ">
+          <div className="flex justify-between items-center h-16 md:px-10 px-2 bg-white z-[1000]">
+            <Image src={headerLogo} alt="headerLogo" className="" />
 
-    )
+            <Box
+              display={"flex"}
+              alignItems="center"
+              gap={2}
+              border={"1px solid #231f20"}
+              borderRadius={1}
+              p={1}
+              width={"400px"}
+            >
+              <SearchOutlinedIcon style={{ color: "#231f20" }} />
+              <input
+                type="text"
+                placeholder="Search Tires & Accessories"
+                className="w-full bg-transparent outline-none text-gray-800"
+              />
+            </Box>
+
+            <div className="flex items-center gap-4">
+              <PersonOutlineOutlinedIcon style={{ color: "#231f20" }} />
+              <FavoriteBorderOutlinedIcon style={{ color: "#231f20" }} />
+              <ShoppingCartOutlinedIcon style={{ color: "#231f20" }} />
+            </div>
+          </div>
+
+          <Categories
+            categories={categories}
+            setSelectedCategory={setSelectedCategory}
+            setShowSubCatBar={setShowSubCatBar}
+          />
+
+          {selectedCategory && showSubCatBar && (
+            <SubCategories
+              category={selectedCategory}
+              setShowSubCatBar={setShowSubCatBar}
+              id=""
+            />
+          )}
+        </div>
+      )}
+    </div>
+  );
 }
