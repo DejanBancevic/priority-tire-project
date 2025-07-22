@@ -120,9 +120,14 @@ export default function Header() {
           )} */}
         </div>
       ) : (
-        <div className="flex flex-col ">
+        <div className="flex flex-col border-b-2">
           <div className="flex justify-between items-center h-16 md:px-10 px-2 bg-white z-[1000]">
-            <Image src={headerLogo} alt="headerLogo" className="" />
+            <Image
+              src={headerLogo}
+              alt="headerLogo"
+              className=""
+              onClick={() => router.push("/")}
+            />
 
             <Box
               display={"flex"}
