@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from '@mui/material'
+import { Box, Button, Grid, Typography } from '@mui/material'
 import PromoFirst from "../../public/promotions/Priority_Tire_First_Time_Buyer_discount.jpg";
 import PromoSecond from "../../public/promotions/Priority_Tire_Special_Discounts.jpg";
 import PromoThird from "../../public/promotions/Priority_Tire_Clearance_deals.jpg";
@@ -7,11 +7,21 @@ import Image from "next/image";
 
 const PromotionsComp = () => {
     return (
-        <div className='flex flex-col justify-center align-middle'>
+        <Box sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignContent: "middle"
+        }}>
 
-            <h1 className='text-2xl text-black font-bold text-center'>
+            <Typography
+                variant="h5"
+                align="center"
+                fontWeight="bold"
+                color="text.primary"
+            >
                 Save Now With Our Promotions
-            </h1>
+            </Typography>
 
             <Grid container
                 color="black"
@@ -32,7 +42,7 @@ const PromotionsComp = () => {
                     >
                         <Image
                             src={PromoFirst}
-                            alt="Priority Tire First Time Buyer discount"
+                            alt="Promo Image"
                             layout="fill"
                             objectFit="cover"
                         />
@@ -50,9 +60,23 @@ const PromotionsComp = () => {
                             }}
 
                         >
-                            <p className='font-bold text-xl'>First Time Buyer</p>
-                            <p className='font-bold text-4xl'>$5 OFF</p>
-                            <p className='border rounded-md p-4'>Copy Coupon Code: FIRST5</p>
+                            <Typography variant="h6" fontWeight="bold">
+                                First Time Buyer
+                            </Typography>
+                            <Typography variant="h4" fontWeight="bold">
+                                $5 OFF
+                            </Typography>
+                            <Box
+                                sx={{
+                                    border: '1px solid',
+                                    borderRadius: 1,
+                                    p: 2,
+                                }}
+                            >
+                                <Typography>
+                                    Copy Coupon Code: <strong>FIRST5</strong>
+                                </Typography>
+                            </Box>
                         </Box>
                     </Box>
                 </Grid>
@@ -68,7 +92,7 @@ const PromotionsComp = () => {
                     >
                         <Image
                             src={PromoSecond}
-                            alt="Priority Tire First Time Buyer discount"
+                            alt="Promo Image"
                             layout="fill"
                             objectFit="cover"
                         />
@@ -86,13 +110,17 @@ const PromotionsComp = () => {
                             }}
 
                         >
-                            <p className='font-bold text-xl'>5% DISCOUNT FOR</p>
-                            <ul className="list-disc pl-4 font-bold">
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>
+                                5% DISCOUNT FOR
+                            </Typography>
+
+                            <Box component="ul" sx={{ listStyleType: 'disc', pl: 4, fontWeight: 'bold', }}>
                                 <li>Military</li>
                                 <li>Teachers</li>
-                                <li>First reponders</li>
+                                <li>First responders</li>
                                 <li>Medical staff</li>
-                            </ul>
+                            </Box>
+
                         </Box>
                     </Box>
                 </Grid>
@@ -108,7 +136,7 @@ const PromotionsComp = () => {
                     >
                         <Image
                             src={PromoThird}
-                            alt="Priority Tire First Time Buyer discount"
+                            alt="Promo Image"
                             layout="fill"
                             objectFit="cover"
                         />
@@ -118,9 +146,9 @@ const PromotionsComp = () => {
                                 position: "absolute",
                                 width: 160,
                                 bottom: 40,
-                                left:60,
-                                bgcolor: "#FFB634",        
-                                color: "#231f20",         
+                                left: 60,
+                                bgcolor: "#FFB634",
+                                color: "#231f20",
                                 fontWeight: "bold",
                             }}
 
@@ -130,8 +158,8 @@ const PromotionsComp = () => {
                     </Box>
                 </Grid>
             </Grid>
+        </Box>
 
-        </div>
     )
 }
 

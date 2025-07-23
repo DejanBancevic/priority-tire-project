@@ -29,7 +29,12 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
           borderRadius: 2,
         }}
       >
-        <Box sx={{ width: { xs: "100%", md: "100%" }, height: {xs: 200, md:400}, position: "relative" }}>
+        <Box
+          sx={{
+            width: "100%",
+            aspectRatio: "4 / 3",
+            position: "relative"
+          }}>
           <Image src={selectedImage} alt={"Product image"} fill />
         </Box>
       </Card>
@@ -54,7 +59,11 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
                   }}
                 >
                   <Box
-                    sx={{ width: "100%", height: 180, position: "relative" }}
+                    sx={{
+                      width: "100%",
+                      height: 180,
+                      position: "relative"
+                    }}
                   >
                     <Image src={product.image} alt={product.title} fill />
                   </Box>

@@ -11,6 +11,7 @@ import nokian from "../../../public/rebates/Nokian-save1-200.jpg";
 import yokohama from "../../../public/rebates/yokohama-save-200.jpg";
 import type { StaticImageData } from "next/image";
 import PopularProductsCarouselComp from '../PopularProductsCarouselComp/PopularProductsCarouselComp';
+import { Box, Typography } from '@mui/material';
 
 
 export type PopularProductsCarouselCard = {
@@ -85,15 +86,25 @@ const popularProductsCarouselList: PopularProductsCarouselCard[] = [
 
 const PopularProductsComp = () => {
     return (
-        <div className='flex flex-col justify-center align-middle gap-6 mb-16'>
-            <h1 className='text-2xl text-black font-bold text-center'>
+        <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+            gap={6}
+            mb={16}
+        >
+            <Typography
+                variant="h5" 
+                fontWeight="bold"
+                color="black"
+                align="center"
+            >
                 View Our Popular Products
-            </h1>
+            </Typography>
 
-            <PopularProductsCarouselComp
-                cards={popularProductsCarouselList}
-            />
-        </div>
+            <PopularProductsCarouselComp cards={popularProductsCarouselList} />
+        </Box>
     )
 }
 

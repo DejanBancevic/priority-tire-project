@@ -5,11 +5,10 @@ import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Box, Button, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Button, InputBase, useMediaQuery, useTheme } from "@mui/material";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import SubCategories from "./SubCategories/SubCategories";
 import Categories from "./Categories/Categories";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { client } from "@/lib/graphqlClient";
 import { GET_CATEGORIES } from "@/lib/queries";
@@ -48,7 +47,7 @@ export default function Header() {
       try {
         const res = await fetch(`/api/subCategories?parentCategoryId=${id}`);
         const json = await res.json();
-     
+
         console.log("subCategories:", json);
 
         //const data: any = json.categories.items.slice(0, 2);
@@ -64,23 +63,42 @@ export default function Header() {
   return (
     <div>
       {mediaAdapter ? (
-        <div className="flex flex-col ">
-          <div className="flex justify-between items-center h-16 px-2 bg-white z-[1000]">
-            <button
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', borderBottom: 1, borderColor: 'divider' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: 64,
+              px: 2,
+              bgcolor: 'white',
+              zIndex: 1000,
+            }}
+          >
+            <Button
+              sx={{
+                padding: 0,   
+                minWidth: 0,   
+              }}
               onClick={() =>
                 setShowCategoriesBar((showCategoriesBar) => !showCategoriesBar)
               }
             >
               <MenuOutlinedIcon style={{ color: "#231f20" }} />
-            </button>
+            </Button>
 
-            <button
+            <Button
+              sx={{
+                padding: 0,
+                minWidth: 0,
+              }}
               onClick={() =>
                 setShowSearchInput((showSearchInput) => !showSearchInput)
               }
             >
               <SearchOutlinedIcon style={{ color: "#231f20" }} />
-            </button>
+            </Button>
 
             <Image
               src={headerLogo}
@@ -89,19 +107,25 @@ export default function Header() {
               onClick={() => router.push("/")}
             />
 
-            <div className="flex items-center gap-4">
+            <Box display={"flex"} alignItems={"center"} gap={1}>
               <PersonOutlineOutlinedIcon style={{ color: "#231f20" }} />
               <FavoriteBorderOutlinedIcon style={{ color: "#231f20" }} />
               <ShoppingCartOutlinedIcon style={{ color: "#231f20" }} />
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           {showSearchInput && (
-            <input
-              type="text"
+            <InputBase
               placeholder="Search Tires & Accessories"
-              className=" bg-white px-4 py-2 w-full outline-none text-gray-800 z-[1000]"
-            />
+              fullWidth
+              sx={{
+                bgcolor: 'white',
+                px: 2,      
+                py: 1,       
+                outline: 'none',
+                zIndex: 1000,
+              }}
+          />
           )}
 
           {showCategoriesBar && (
@@ -118,10 +142,23 @@ export default function Header() {
               setShowSubCatBar={setShowSubCatBar}
             />
           )} */}
-        </div>
+        </Box>
       ) : (
-        <div className="flex flex-col border-b-2">
-          <div className="flex justify-between items-center h-16 md:px-10 px-2 bg-white z-[1000]">
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              height: 64,
+              px: 4,
+              bgcolor: 'white',
+              zIndex: 1000,
+            }}
+          >
             <Image
               src={headerLogo}
               alt="headerLogo"
@@ -139,19 +176,19 @@ export default function Header() {
               width={"400px"}
             >
               <SearchOutlinedIcon style={{ color: "#231f20" }} />
-              <input
-                type="text"
+              <InputBase
                 placeholder="Search Tires & Accessories"
-                className="w-full bg-transparent outline-none text-gray-800"
+                fullWidth
               />
             </Box>
 
-            <div className="flex items-center gap-4">
+            <Box display={"flex"} alignItems={"center"} gap={4}>
               <PersonOutlineOutlinedIcon style={{ color: "#231f20" }} />
               <FavoriteBorderOutlinedIcon style={{ color: "#231f20" }} />
               <ShoppingCartOutlinedIcon style={{ color: "#231f20" }} />
-            </div>
-          </div>
+            </Box>
+
+          </Box>
 
           <Categories
             categories={categories}
@@ -166,7 +203,7 @@ export default function Header() {
               id=""
             />
           )}
-        </div>
+        </Box>
       )}
     </div>
   );

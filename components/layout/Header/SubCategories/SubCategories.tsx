@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 
 type SubCategoriesProps = {
@@ -7,11 +7,8 @@ type SubCategoriesProps = {
   id: string;
 };
 
-export default function SubCategories({
-  category,
-  setShowSubCatBar,
-  id,
-}: SubCategoriesProps) {
+export default function SubCategories({ category, setShowSubCatBar, id,}: SubCategoriesProps) {
+
   const subCategories = [
     { name: "Tires", prod: "20" },
     { name: "Accessories", prod: "12" },
@@ -20,8 +17,21 @@ export default function SubCategories({
   ];
 
   return (
-    <div className="flex flex-col ">
-      <div className="flex flex-col md:flex-row justify-center items-center md:gap-4 pl-6 md:h-12 border-t border-gray-300 bg-white  w-full z-[1000] ">
+    <Box display="flex" flexDirection="column">
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', md: 'row' }}
+        justifyContent="center"
+        alignItems="center"
+        gap={{ md: 4 }}
+        pl={6}
+        height={{ md: 48 }} 
+        borderTop={1}
+        borderColor="grey.300"
+        bgcolor="white"
+        width="100%"
+        zIndex={1000}
+      >
         {subCategories.map((subCategory, index) => (
           <Button
             key={index}
@@ -32,7 +42,7 @@ export default function SubCategories({
             <span className="text-gray-500 ml-1">({subCategory.prod})</span>
           </Button>
         ))}
-      </div>
+     </Box>
 
       <div
         className="fixed inset-0 z-[800] bg-black opacity-35 "
@@ -40,6 +50,6 @@ export default function SubCategories({
           setShowSubCatBar(false);
         }}
       />
-    </div>
+    </Box>
   );
 }

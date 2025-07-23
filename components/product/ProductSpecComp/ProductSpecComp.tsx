@@ -25,7 +25,10 @@ const ProductSpecComp = ({ specs}: ProductSpecCompProps) => {
                 sx={{
                     columnCount: { xs: 1, md: 2 },
                     columnGap: 4,
-                    mt:3,
+                    my: 3,
+                    borderTop: 1,
+                    borderColor: "#e8e7e3",
+                    pt: 3,
                 }}
             >
                 {specs.map((spec, index) => (

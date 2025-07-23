@@ -1,4 +1,5 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, Typography } from '@mui/material'
+import Link from 'next/link'
 import React from 'react'
 
 export default function Footer() {
@@ -14,36 +15,76 @@ export default function Footer() {
             zIndex={2000}
         >
             <Grid  >
-                <Box display="flex" flexDirection="column" gap={1}  alignItems={{ xs: "center", md: "flex-start" }}>
-                    <h2>Customer</h2>
-                    <a href=''>My Account</a>
-                    <a href=''>Track My Order</a>
-                    <a href=''>Membership Benefits</a>
+                <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>
+                    <Typography variant="h6" fontWeight="bold" >
+                        Customer
+                    </Typography>
+                    <Link href="/" >
+                        My Account
+                    </Link>
+                    <Link href="/" >
+                        Track My Order
+                    </Link>
+                    <Link href="/" >
+                        Membership Benefits
+                    </Link>
                 </Box>
             </Grid>
             <Grid>
                 <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>
-                    <h2>Shopping Information</h2>
-                    <a href=''>Deals</a>
-                    <a href=''>Tire Rebates</a>
-                    <a href=''>FAQs</a>
-                    <a href=''>Shipping Info</a>
-                    <a href=''>Financing Info</a>
+                    <Typography variant="h6" fontWeight="bold" >
+                        Shopping Information
+                    </Typography>
+                    <Link href="/" >
+                        Deals
+                    </Link>
+                    <Link href="/" >
+                        Tire Rebates
+                    </Link>
+                    <Link href="/" >
+                        FAQs
+                    </Link>
+                    <Link href="/" >
+                        Shipping Info
+                    </Link>
+                    <Link href="/" >
+                        Financing Info
+                    </Link>
                 </Box>
             </Grid>
             <Grid >
-                <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>                    <h2>Warehouse Locations</h2>
-                    <a href=''>1436 Eck Rd. Allentown, PA 18104</a>
-                    <a href=''>500 Airline Dr. Suite 20 Coppell, TX 75019</a>
-                    <a href=''>1750 Airport Rd STE 102 Jacksonville, FL 32218</a>
+                <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>
+                    <Typography variant="h6" fontWeight="bold" >
+                        Warehouse Locations
+                    </Typography>
+                    <Link href="/" >
+                        1436 Eck Rd. Allentown, PA 18104
+                    </Link>
+                    <Link href="/" >
+                        500 Airline Dr. Suite 20 Coppell, TX 75019
+                    </Link>
+                    <Link href="/" >
+                        1750 Airport Rd Jacksonville, FL 32218
+                    </Link>
                 </Box>
             </Grid>
             <Grid >
-                <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>                    <h2>Work with Us</h2>
-                    <a href=''>Become a Dealer</a>
-                    <a href=''>Join Installer Program</a>
-                    <a href=''>Join Affiliate Program</a>
-                    <a href=''>Help Center</a>
+                <Box display="flex" flexDirection="column" gap={1} alignItems={{ xs: "center", md: "flex-start" }}>
+                    <Typography variant="h6" fontWeight="bold" >
+                        Work with Us
+                    </Typography>
+                    <Link href="/" >
+                        Become a Dealer
+                    </Link>
+                    <Link href="/" >
+                        Join Installer Program
+                    </Link>
+                    <Link href="/" >
+                        Join Affiliate Program
+                    </Link>
+                    <Link href="/" >
+                        Help Center
+                    </Link>
                 </Box>
             </Grid>
         </Grid>

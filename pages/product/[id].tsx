@@ -1,7 +1,5 @@
-import { Box, Button, Grid, MenuItem, Select, Typography } from "@mui/material";
+import {  Grid, } from "@mui/material";
 import React, { useState } from "react";
-import LandslideIcon from "@mui/icons-material/Landslide";
-import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
 import ProductCarouselComp from "@/components/product/ProductCarouselComp/ProductCarouselComp";
 import ProductInfoComp from "@/components/product/ProductInfoComp/ProductInfoComp";
 import goodyear from "../../public/rebates/goodyear-save-up-200.jpg";

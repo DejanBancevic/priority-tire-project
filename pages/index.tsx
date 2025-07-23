@@ -1,12 +1,10 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
-import heroBanner from "../public/heroBanner.webp";
 import { client } from "../lib/graphqlClient";
 import { GET_PRODUCTS, GET_CATEGORIES } from "../lib/queries";
-import { maxHeaderSize } from "http";
 import PromotionsComp from "@/components/PromotionsComp/PromotionsComp";
 import RebatesComp from "@/components/rebates/RebatesComp/RebatesComp";
 import PopularProductComp from "@/components/popularProducts/PopularProductsComp/PopularProductsComp";
+import HeroBannerComp from "@/components/HeroBannerComp/HeroBannerComp";
+import { Box } from "@mui/material";
 
 export async function getServerSideProps() {
   const data = await client.request(GET_CATEGORIES);
@@ -18,39 +16,32 @@ export async function getServerSideProps() {
   };
 }
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export default function Home({ categories }: any) {
   if (!categories || !Array.isArray(categories)) {
     return <p>Failed to load categories.</p>;
   }
 
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className}
-    bg-white font-sans min-h-screen flex flex-col gap-8 `}
-    >
 
-      <Image
-        src={heroBanner}
-        alt="Hero Banner"
-      />
+    <>
+      <Box
+        sx={{
+          backgroundColor: 'white',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
+        }}
+      >
+        <HeroBannerComp />
 
-      <RebatesComp />
+        <RebatesComp />
 
-      <PromotionsComp />
+        <PromotionsComp />
 
-      <PopularProductComp />
+        <PopularProductComp />
 
-      {/* <div className="text-black text-center mb-10">
+        {/* <div className="text-black text-center mb-10">
         <h1>All cats ({categories.length})</h1>
         <ul>
           {categories.map((category, i) => {
@@ -66,6 +57,7 @@ export default function Home({ categories }: any) {
         </ul>
       </div> */}
 
-    </div>
+      </Box>
+    </>
   );
 }
