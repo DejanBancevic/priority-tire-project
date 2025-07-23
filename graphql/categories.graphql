@@ -1,20 +1,35 @@
-query GetCategories {
+query Categories {
    categories(filters: {}) {
-      items {
-        id
-        name
-        product_count
-      }
+      ...CategoryItems
     }
 }
 
-query GetSubCategories($parentCategoryId: String!) {
-  categories(filters: { parent_id: { eq: $parentCategoryId } }) {
+query SubCategories($ids: [String!]) {
+  categories(filters: { ids: { in: $ids } }) {
     items {
       id
       name
       product_count
+      products {
+        items {
+          name
+          id
+        }
+      }
     }
   }
 }
 
+fragment CategoryItems on CategoryResult {
+  items {
+    id
+    name
+    product_count
+    products {
+      items {
+        name
+        id
+      }
+    }
+  }
+}

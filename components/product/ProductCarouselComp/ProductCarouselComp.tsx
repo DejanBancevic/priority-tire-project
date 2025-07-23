@@ -32,7 +32,7 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
         <Box
           sx={{
             width: "100%",
-            aspectRatio: "4 / 3",
+            aspectRatio: "5 / 3",
             position: "relative"
           }}>
           <Image src={selectedImage} alt={"Product image"} fill />

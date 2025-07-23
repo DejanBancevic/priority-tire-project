@@ -9323,37 +9323,55 @@ export type CreateEmptyCartInput = {
   cart_id?: InputMaybe<Scalars['String']['input']>;
 };
 
-export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetCategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryResult', items?: Array<{ __typename?: 'CategoryTree', id?: number | null, name?: string | null, product_count?: number | null } | null> | null } | null };
+export type CategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryResult', items?: Array<{ __typename?: 'CategoryTree', id?: number | null, name?: string | null, product_count?: number | null, products?: { __typename?: 'CategoryProducts', items?: Array<{ __typename?: 'BundleProduct', name?: string | null, id?: number | null } | { __typename?: 'ConfigurableProduct', name?: string | null, id?: number | null } | { __typename?: 'DownloadableProduct', name?: string | null, id?: number | null } | { __typename?: 'GroupedProduct', name?: string | null, id?: number | null } | { __typename?: 'SimpleProduct', name?: string | null, id?: number | null } | { __typename?: 'VirtualProduct', name?: string | null, id?: number | null } | null> | null } | null } | null> | null } | null };
 
-export type GetSubCategoriesQueryVariables = Exact<{
-  parentCategoryId: Scalars['String']['input'];
+export type SubCategoriesQueryVariables = Exact<{
+  ids?: InputMaybe<Array<Scalars['String']['input']> | Scalars['String']['input']>;
 }>;
 
 
-export type GetSubCategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryResult', items?: Array<{ __typename?: 'CategoryTree', id?: number | null, name?: string | null, product_count?: number | null } | null> | null } | null };
+export type SubCategoriesQuery = { __typename?: 'Query', categories?: { __typename?: 'CategoryResult', items?: Array<{ __typename?: 'CategoryTree', id?: number | null, name?: string | null, product_count?: number | null, products?: { __typename?: 'CategoryProducts', items?: Array<{ __typename?: 'BundleProduct', name?: string | null, id?: number | null } | { __typename?: 'ConfigurableProduct', name?: string | null, id?: number | null } | { __typename?: 'DownloadableProduct', name?: string | null, id?: number | null } | { __typename?: 'GroupedProduct', name?: string | null, id?: number | null } | { __typename?: 'SimpleProduct', name?: string | null, id?: number | null } | { __typename?: 'VirtualProduct', name?: string | null, id?: number | null } | null> | null } | null } | null> | null } | null };
 
+export type CategoryItemsFragment = { __typename?: 'CategoryResult', items?: Array<{ __typename?: 'CategoryTree', id?: number | null, name?: string | null, product_count?: number | null, products?: { __typename?: 'CategoryProducts', items?: Array<{ __typename?: 'BundleProduct', name?: string | null, id?: number | null } | { __typename?: 'ConfigurableProduct', name?: string | null, id?: number | null } | { __typename?: 'DownloadableProduct', name?: string | null, id?: number | null } | { __typename?: 'GroupedProduct', name?: string | null, id?: number | null } | { __typename?: 'SimpleProduct', name?: string | null, id?: number | null } | { __typename?: 'VirtualProduct', name?: string | null, id?: number | null } | null> | null } | null } | null> | null };
 
-export const GetCategoriesDocument = gql`
-    query GetCategories {
-  categories(filters: {}) {
-    items {
-      id
-      name
-      product_count
+export const CategoryItemsFragmentDoc = gql`
+    fragment CategoryItems on CategoryResult {
+  items {
+    id
+    name
+    product_count
+    products {
+      items {
+        name
+        id
+      }
     }
   }
 }
     `;
-export const GetSubCategoriesDocument = gql`
-    query GetSubCategories($parentCategoryId: String!) {
-  categories(filters: {parent_id: {eq: $parentCategoryId}}) {
+export const CategoriesDocument = gql`
+    query Categories {
+  categories(filters: {}) {
+    ...CategoryItems
+  }
+}
+    ${CategoryItemsFragmentDoc}`;
+export const SubCategoriesDocument = gql`
+    query SubCategories($ids: [String!]) {
+  categories(filters: {ids: {in: $ids}}) {
     items {
       id
       name
       product_count
+      products {
+        items {
+          name
+          id
+        }
+      }
     }
   }
 }
@@ -9366,11 +9384,11 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    GetCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>({ document: GetCategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetCategories', 'query', variables);
+    Categories(variables?: CategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<CategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<CategoriesQuery>({ document: CategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'Categories', 'query', variables);
     },
-    GetSubCategories(variables: GetSubCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<GetSubCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetSubCategoriesQuery>({ document: GetSubCategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'GetSubCategories', 'query', variables);
+    SubCategories(variables?: SubCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SubCategoriesQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SubCategoriesQuery>({ document: SubCategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SubCategories', 'query', variables);
     }
   };
 }

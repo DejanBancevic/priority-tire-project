@@ -1,35 +1,26 @@
-import { client } from "../lib/graphqlClient";
-import { GET_PRODUCTS, GET_CATEGORIES } from "../lib/queries";
+
+
 import PromotionsComp from "@/components/PromotionsComp/PromotionsComp";
 import RebatesComp from "@/components/rebates/RebatesComp/RebatesComp";
 import PopularProductComp from "@/components/popularProducts/PopularProductsComp/PopularProductsComp";
 import HeroBannerComp from "@/components/HeroBannerComp/HeroBannerComp";
 import { Box } from "@mui/material";
+import { gql } from "graphql-request";
+import { CategoriesDocument, CategoriesQuery } from "@/graphql/generated";
+import { client } from "@/lib/apolloClient";
 
-export async function getServerSideProps() {
-  const data = await client.request(GET_CATEGORIES);
+type HomeProps = CategoriesQuery
 
-  return {
-    props: {
-      categories: (data as any).categories?.items,
-    },
-  };
-}
-
-export default function Home({ categories }: any) {
-  if (!categories || !Array.isArray(categories)) {
-    return <p>Failed to load categories.</p>;
-  }
+export default function Home({ categories }: HomeProps) {
 
   return (
-
     <>
       <Box
         sx={{
-          backgroundColor: 'white',
-          minHeight: '100vh',
-          display: 'flex',
-          flexDirection: 'column',
+          backgroundColor: "white",
+          minHeight: "100vh",
+          display: "flex",
+          flexDirection: "column",
           gap: 8,
         }}
       >
@@ -56,8 +47,17 @@ export default function Home({ categories }: any) {
           })}
         </ul>
       </div> */}
-
       </Box>
     </>
   );
 }
+
+// export async function getServerSideProps() {
+//   const data: CategoriesQuery = await client.request(CategoriesDocument);
+
+//   return {
+//     props: {
+//       categories: data.categories?.items,
+//     },
+//   };
+// }
