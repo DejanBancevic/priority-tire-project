@@ -91,10 +91,10 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         sx={{
           justifyContent: "start",
           alignItems: "center",
-          gap: 5,
+          gap:2,
         }}
       >
-        <Grid size={3}>
+        <Grid size={{ xs: 12, md: 5 }}>
           <Box
             sx={{
               display: "flex",
@@ -115,7 +115,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           </Box>
         </Grid>
 
-        <Grid size={4}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Box
             sx={{
               display: "flex",

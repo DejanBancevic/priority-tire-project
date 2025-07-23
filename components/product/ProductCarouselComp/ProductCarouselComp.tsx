@@ -1,10 +1,8 @@
-import { Box, Button, Card, Typography } from "@mui/material";
+import { Box, Button, Card,  } from "@mui/material";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
 import { ProductCarouselCompCard } from "@/pages/product/[id]";
-import yokohama from "../../../public/rebates/yokohama-save-200.jpg";
 import type { StaticImageData } from "next/image";
 
 type ProductCarouselCompProps = {
@@ -31,7 +29,7 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
           borderRadius: 2,
         }}
       >
-        <Box sx={{ width: "100%", height: 400, position: "relative" }}>
+        <Box sx={{ width: { xs: "100%", md: "100%" }, height: {xs: 200, md:400}, position: "relative" }}>
           <Image src={selectedImage} alt={"Product image"} fill />
         </Box>
       </Card>
