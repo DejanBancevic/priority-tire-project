@@ -1,8 +1,8 @@
-import { Box, Button, Card,  } from "@mui/material";
+import { Box, Button, Card, } from "@mui/material";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useState } from "react";
 import Image from "next/image";
-import { ProductCarouselCompCard } from "@/pages/product/[id]";
+import { ProductCarouselCompCard } from "@/pages/product/[sku]";
 import type { StaticImageData } from "next/image";
 
 type ProductCarouselCompProps = {

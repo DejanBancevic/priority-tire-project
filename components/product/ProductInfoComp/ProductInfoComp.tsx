@@ -2,15 +2,17 @@ import { Box, Button, Grid, MenuItem, Select, Typography } from "@mui/material";
 import React, { useState } from "react";
 import LandslideIcon from "@mui/icons-material/Landslide";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
-import { ProductInfoNode } from "@/pages/product/[id]";
+import { ProductInfoNode } from "@/pages/product/[sku]";
+import { ProductItemFragment, ReviewsItemFragment } from "@/graphql/generated";
 
 type ProductInfoCompProps = {
-  product: ProductInfoNode;
+  product: ProductItemFragment;
 };
 
 const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [counter, setCounter] = useState(1);
+  const [fullPrice, setfullPrice] = useState(product.price?.regularPrice?.amount?.value);
 
   return (
     <div>
@@ -21,7 +23,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           fontSize: 30,
         }}
       >
-        {product.title}
+        {product.name}
       </Typography>
 
       <Box
@@ -91,7 +93,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         sx={{
           justifyContent: "start",
           alignItems: "center",
-          gap:2,
+          gap: 2,
         }}
       >
         <Grid size={{ xs: 12, md: 5 }}>
@@ -106,7 +108,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
             </Typography>
 
             <Typography sx={{ fontWeight: "bold", fontSize: 30 }}>
-              ${product.price}
+              ${product.price?.regularPrice?.amount?.value}
             </Typography>
 
             <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
@@ -128,10 +130,44 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
             </Typography>
 
             <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-              {product.quantity} ✓
+              {product.stock_status === "IN_STOCK" ? (
+                "✓"
+              ) : (
+                  "X"
+              )}
             </Typography>
           </Box>
         </Grid>
+      </Grid>
+
+      <Grid
+        container
+        spacing={1}
+        sx={{
+          justifyContent: "start",
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Grid size={{ xs: 12, md: 5 }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
+              Total Price: 
+            </Typography>
+
+            <Typography sx={{ fontWeight: "bold", fontSize: 30, ml: 1}}>
+              ${fullPrice}
+            </Typography>
+
+          </Box>
+        </Grid>
+
+      
       </Grid>
 
       <Typography
@@ -140,7 +176,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           mt: 2,
         }}
       >
-        Pick an option for exact price
+        Pick an option for more detailed information.
       </Typography>
 
       <Select
@@ -159,11 +195,14 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           <h1>Select an option</h1>
         </MenuItem>
 
-        {product.options.map((option: any, index: number) => (
-          <MenuItem key={index} value={option.text}>
-            {option.text}
-          </MenuItem>
-        ))}
+        {product.media_gallery_entries
+          ?.filter((item): item is NonNullable<typeof item> => item !== null)
+          .map((entry, index) => (
+            <MenuItem key={index} value={entry.uid}>
+              {entry.id}
+            </MenuItem>
+          ))}
+
       </Select>
 
       <Grid display={"flex"} gap={2} mt={1}>
@@ -197,6 +236,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         </Box>
 
         <Button
+          onClick={() => setfullPrice(counter * product.price?.regularPrice?.amount?.value!)}
           fullWidth
           sx={{
             fontWeight: "bold",

@@ -1,5 +1,5 @@
-import {  Grid, } from "@mui/material";
-import React, { useState } from "react";
+import { Grid, } from "@mui/material";
+import React from "react";
 import ProductCarouselComp from "@/components/product/ProductCarouselComp/ProductCarouselComp";
 import ProductInfoComp from "@/components/product/ProductInfoComp/ProductInfoComp";
 import goodyear from "../../public/rebates/goodyear-save-up-200.jpg";
@@ -15,6 +15,9 @@ import yokohama from "../../public/rebates/yokohama-save-200.jpg";
 import type { StaticImageData } from "next/image";
 import ProductSpecComp from "@/components/product/ProductSpecComp/ProductSpecComp";
 import ProductDescComp from "@/components/product/ProductDescComp/ProductDescComp";
+import { client } from "@/lib/apolloClient";
+import { GetStaticPaths, GetStaticProps } from "next";
+import { AllProductsDocument, ProductDocument, ProductItemFragment, ProductItemsFragment, ProductsDocument } from "@/graphql/generated";
 
 export type ProductCarouselCompCard = {
     id: number;
@@ -42,24 +45,28 @@ export type DescData = {
 }
 
 
-const ProductPage = () => {
+type ProductPageProps = {
+    product: ProductItemFragment,
+};
 
-    const product: ProductInfoNode = {
-        title: "Cooper Discoverer AT3",
-        price: "123",
-        quantity: "23",
-        options: [
-            {
-                text: "ddddddddddd",
-            },
-            {
-                text: "aaaaaaaaaaa",
-            },
-            {
-                text: "22222222222222",
-            },
-        ],
-    };
+export default function ProductPage({ product }: ProductPageProps) {
+
+    // const product: ProductInfoNode = {
+    //     title: "Cooper Discoverer AT3",
+    //     price: "123",
+    //     quantity: "23",
+    //     options: [
+    //         {
+    //             text: "ddddddddddd",
+    //         },
+    //         {
+    //             text: "aaaaaaaaaaa",
+    //         },
+    //         {
+    //             text: "22222222222222",
+    //         },
+    //     ],
+    // };
 
     const popularProductsCarouselList: ProductCarouselCompCard[] = [
         {
@@ -190,11 +197,44 @@ const ProductPage = () => {
                 </Grid>
 
                 <Grid size={{ xs: 12, md: 12 }}  >
-                    <ProductDescComp descriptions={descList}/>
+                    <ProductDescComp descriptions={descList} />
                 </Grid>
             </Grid>
         </div>
     );
 };
 
-export default ProductPage;
+
+export const getStaticPaths: GetStaticPaths = async () => {
+
+    const { data } = await client.query({ query: AllProductsDocument });
+
+    const paths = data.products?.items?.map((product: ProductItemFragment) => ({
+        params: { sku: product?.sku || "" },
+    })) ?? [];
+
+    return {
+        paths,
+        fallback: "blocking"
+    }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+
+    const sku = params?.sku as string;
+
+    const { data: productBySku } = await client.query({
+        query: ProductDocument,
+        variables: { sku },
+    });
+
+    //console.log(JSON.stringify(productBySku.products.items, null, 2));
+
+    const product = productBySku.products?.items?.[0] || null;
+
+    if (!product) {
+        return { notFound: true };
+    }
+
+    return { props: { product } };
+};

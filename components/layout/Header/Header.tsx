@@ -16,14 +16,16 @@ import {
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import SubCategories from "./SubCategories/SubCategories";
 import Categories from "./Categories/Categories";
-import { useQuery } from "@apollo/client";
 import {
-  CategoriesDocument,
-  CategoriesQuery,
-  SubCategoriesDocument,
+  CategoryItemsFragment,
 } from "@/graphql/generated";
 
-export default function Header() {
+type HeaderProps = {
+  categories: CategoryItemsFragment,
+
+};
+
+export default function Header({categories}: HeaderProps) {
   const theme = useTheme();
   const mediaAdapter = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -32,17 +34,11 @@ export default function Header() {
   const [selectedCategory, setSelectedCategory] = useState<number>();
   const [showSubCatBar, setShowSubCatBar] = useState(false);
 
-  const { data: categoriesData, loading: categoriesLoading } =
-    useQuery(CategoriesDocument);
-
-  const categories = categoriesData?.categories;
-
   return (
-    <div >
+    <div className="top-0 sticky flex flex-col left-0 z-[2000]">
       {mediaAdapter ? (
         <Box
           sx={{
-            position: "sticky",
             display: "flex",
             flexDirection: "column",
             borderBottom: 1,
@@ -125,11 +121,11 @@ export default function Header() {
               id={selectedCategory}
             />
           )}
+
         </Box>
       ) : (
         <Box
           sx={{
-            left: 0,
             display: "flex",
             flexDirection: "column",
           }}
@@ -142,7 +138,7 @@ export default function Header() {
               height: 64,
               px: 4,
               bgcolor: "white",
-              zIndex: 1000,
+              zIndex: 1100,
             }}
           >
             <Link href="/">
@@ -182,6 +178,9 @@ export default function Header() {
               id={selectedCategory}
             />
           )}
+
+
+
         </Box>
       )}
     </div>

@@ -5,7 +5,6 @@ export default async function handler(req: NextApiRequest, res : NextApiResponse
     method: req.method,
     headers: {
       "Content-Type": "application/json",
-      // forward any auth headers etc.
       ...(req.headers.authorization && {
         Authorization: req.headers.authorization,
       }),

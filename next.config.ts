@@ -5,4 +5,16 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
 };
 
+module.exports = {
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'backend.reachdigital.dev',
+        pathname: '/media/catalog/product/**', 
+      },
+    ],
+  }
+};
+
 export default nextConfig;

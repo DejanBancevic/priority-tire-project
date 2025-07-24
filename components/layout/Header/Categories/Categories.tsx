@@ -1,4 +1,4 @@
-import { CategoriesQuery, CategoryItemsFragment } from "@/graphql/generated";
+import { CategoryItemsFragment } from "@/graphql/generated";
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 

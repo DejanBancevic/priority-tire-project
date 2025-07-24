@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
-import { DescData } from '@/pages/product/[id]';
+import { DescData } from '@/pages/product/[sku]';
 
 type ProductDescCompProps = {
     descriptions: DescData

@@ -1,12 +1,12 @@
 import React from "react";
 import { Table, TableBody, TableCell, TableRow, TableContainer, Paper, Box, Typography, } from "@mui/material";
-import { SpecData } from "@/pages/product/[id]";
+import { SpecData } from "@/pages/product/[sku]";
 
 type ProductSpecCompProps = {
     specs: SpecData[];
 };
 
-const ProductSpecComp = ({ specs}: ProductSpecCompProps) => {
+const ProductSpecComp = ({ specs }: ProductSpecCompProps) => {
 
     return (
         <Box sx={{ mt: 3 }}>

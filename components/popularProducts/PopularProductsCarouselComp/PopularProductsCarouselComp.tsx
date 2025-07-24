@@ -2,14 +2,15 @@ import { Box, Button, Card, Typography } from '@mui/material'
 import useEmblaCarousel from 'embla-carousel-react'
 import { useCallback } from 'react'
 import Image from "next/image";
-import { PopularProductsCarouselCard } from '../PopularProductsComp/PopularProductsComp';
 import { useRouter } from 'next/router';
+import { ProductItemsFragment,} from '@/graphql/generated';
+import nokian from "../../../public/rebates/Nokian-save1-200.jpg";
 
 type PopularProductsCarouselCompProps = {
-    cards: PopularProductsCarouselCard[];
+  products: ProductItemsFragment;
 };
 
-const PopularProductsCarouselComp = ({ cards }: PopularProductsCarouselCompProps) => {
+const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompProps) => {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         containScroll: "trimSnaps",
         align: "start"
@@ -24,14 +25,14 @@ const PopularProductsCarouselComp = ({ cards }: PopularProductsCarouselCompProps
       <div className="relative w-full md:px-20 px-4">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex ">
-            {cards.map((product, index) => (
+            {products?.items?.map((product, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 min-w-[330px] max-w-[330px] min-h-[330px]
                              max-h-[400px] px-2 "
               >
                 <Card
-                  onClick={() => router.push(`/product/${product.id}`)}
+                  onClick={() => router.push(`/product/${product?.sku}`)}
                   key={index}
                   sx={{
                     bgcolor: "#ebedf0",
@@ -49,9 +50,9 @@ const PopularProductsCarouselComp = ({ cards }: PopularProductsCarouselCompProps
                   }}
                 >
                   <Box
-                    sx={{ width: "100%", height: 180, position: "relative" }}
+                    sx={{ width: "100%", height: 200, position: "relative" }}
                   >
-                    <Image src={product.image} alt={product.title} fill />
+                    <Image src={product?.image?.url! ?? nokian} alt={product?.name!} fill />
                   </Box>
 
                   <Typography
@@ -65,7 +66,7 @@ const PopularProductsCarouselComp = ({ cards }: PopularProductsCarouselCompProps
                       mb: 1,
                     }}
                   >
-                    {product.title}
+                    {product?.name}
                   </Typography>
 
                   <Typography
@@ -79,7 +80,7 @@ const PopularProductsCarouselComp = ({ cards }: PopularProductsCarouselCompProps
                       fontFamily: "monospace",
                     }}
                   >
-                    {product.price}
+                    {"$" + product?.price?.regularPrice?.amount?.value }
                   </Typography>
                 </Card>
               </div>
