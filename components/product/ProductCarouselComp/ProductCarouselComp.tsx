@@ -1,15 +1,15 @@
-import { Box, Button, Card, } from "@mui/material";
+import { Box, Button, Card } from "@mui/material";
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useState } from "react";
 import Image from "next/image";
-import { ProductCarouselCompCard } from "@/pages/product/[sku]";
-import type { StaticImageData } from "next/image";
+import { ProductItemFragment } from "@/graphql/generated";
+import nokian from "../../../public/rebates/Nokian-save1-200.jpg";
 
 type ProductCarouselCompProps = {
-  cards: ProductCarouselCompCard[];
+  product: ProductItemFragment;
 };
 
-const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
+const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     containScroll: "trimSnaps",
     align: "start",
@@ -18,9 +18,7 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
   const scrollPrev = useCallback(() => emblaApi?.scrollPrev(), [emblaApi]);
   const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi]);
 
-  const [selectedImage, setSelectedImage] = useState<StaticImageData>(
-    cards[0].image
-  );
+  const [selectedImage, setSelectedImage] = useState(product.image?.url);
 
   return (
     <div className="flex flex-col justify-center">
@@ -33,23 +31,29 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
           sx={{
             width: "100%",
             aspectRatio: "5 / 3",
-            position: "relative"
-          }}>
-          <Image src={selectedImage} alt={"Product image"} fill />
+            position: "relative",
+          }}
+        >
+          <Image
+            src={selectedImage ?? nokian}
+            alt={"Product image"}
+            fill
+            objectFit="contain"
+          />
         </Box>
       </Card>
 
       <div className="relative w-full md:px-12 px-20 mt-2">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex ">
-            {cards.map((product, index) => (
+            {product.media_gallery?.map((product, index) => (
               <div
                 key={index}
                 className="flex-shrink-0 min-w-[130px] max-w-[130px] min-h-[80px]
                              max-h-[80px] px-2 "
               >
                 <Card
-                  onClick={() => setSelectedImage(product.image)}
+                  onClick={() => setSelectedImage(product?.url)}
                   key={index}
                   sx={{
                     borderRadius: 2,
@@ -62,10 +66,15 @@ const ProductCarouselComp = ({ cards }: ProductCarouselCompProps) => {
                     sx={{
                       width: "100%",
                       height: 180,
-                      position: "relative"
+                      position: "relative",
                     }}
                   >
-                    <Image src={product.image} alt={product.title} fill />
+                    <Image
+                      src={product?.url ?? nokian}
+                      alt={product?.url ?? "Product Image"}
+                      objectFit="contain"
+                      fill
+                    />
                   </Box>
                 </Card>
               </div>

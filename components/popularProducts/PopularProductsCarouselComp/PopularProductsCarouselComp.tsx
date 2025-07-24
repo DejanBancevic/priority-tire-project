@@ -50,9 +50,9 @@ const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompPr
                   }}
                 >
                   <Box
-                    sx={{ width: "100%", height: 200, position: "relative" }}
+                    sx={{ width: "100%", height: 200, position: "relative", bgcolor: "background.paper"}}
                   >
-                    <Image src={product?.image?.url! ?? nokian} alt={product?.name!} fill />
+                    <Image src={product?.image?.url ?? nokian} alt={product?.name ?? "Product Image"} fill objectFit='contain' />
                   </Box>
 
                   <Typography

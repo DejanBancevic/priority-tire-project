@@ -2,17 +2,28 @@ import { Box, Button, Grid, MenuItem, Select, Typography } from "@mui/material";
 import React, { useState } from "react";
 import LandslideIcon from "@mui/icons-material/Landslide";
 import ThunderstormIcon from "@mui/icons-material/Thunderstorm";
-import { ProductInfoNode } from "@/pages/product/[sku]";
-import { ProductItemFragment, ReviewsItemFragment } from "@/graphql/generated";
+import { ProductItemFragment } from "@/graphql/generated";
 
 type ProductInfoCompProps = {
   product: ProductItemFragment;
+  setOption: Function;
 };
 
-const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
+const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [counter, setCounter] = useState(1);
-  const [fullPrice, setfullPrice] = useState(product.price?.regularPrice?.amount?.value);
+  const [fullPrice, setfullPrice] = useState(
+    product.price?.regularPrice?.amount?.value
+  );
+  const [fullName, setFullName] = useState(product.name);
+
+  const handleDecrement = () => {
+    setCounter((counter) => Math.max(1, counter - 1));
+  };
+
+  const handleIncrement = () => {
+    setCounter((counter) => counter + 1);
+  };
 
   return (
     <div>
@@ -23,7 +34,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           fontSize: 30,
         }}
       >
-        {product.name}
+        {fullName}
       </Typography>
 
       <Box
@@ -130,11 +141,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
             </Typography>
 
             <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-              {product.stock_status === "IN_STOCK" ? (
-                "✓"
-              ) : (
-                  "X"
-              )}
+              {product.stock_status === "IN_STOCK" ? "✓" : "X"}
             </Typography>
           </Box>
         </Grid>
@@ -157,17 +164,14 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
             }}
           >
             <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-              Total Price: 
+              Total Price:
             </Typography>
 
-            <Typography sx={{ fontWeight: "bold", fontSize: 30, ml: 1}}>
-              ${fullPrice}
+            <Typography sx={{ fontWeight: "bold", fontSize: 30, ml: 1 }}>
+              ${String(fullPrice).slice(0, 5)}
             </Typography>
-
           </Box>
         </Grid>
-
-      
       </Grid>
 
       <Typography
@@ -183,7 +187,10 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         fullWidth
         displayEmpty
         value={selectedOption}
-        onChange={(e) => setSelectedOption(e.target.value)}
+        onChange={(e) => {
+          setSelectedOption(e.target.value);
+          setOption(e.target.value);
+        }}
         sx={{
           mt: 1,
           justifyContent: "start",
@@ -198,11 +205,16 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         {product.media_gallery_entries
           ?.filter((item): item is NonNullable<typeof item> => item !== null)
           .map((entry, index) => (
-            <MenuItem key={index} value={entry.uid}>
+            <MenuItem
+              key={index}
+              value={entry.uid}
+              onClick={() => {
+                setFullName(product.name + " " + entry.id);
+              }}
+            >
               {entry.id}
             </MenuItem>
           ))}
-
       </Select>
 
       <Grid display={"flex"} gap={2} mt={1}>
@@ -215,7 +227,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           }}
         >
           <Button
-            onClick={() => setCounter(counter - 1)}
+            onClick={handleDecrement}
             sx={{
               color: "black",
               fontWeight: "bold",
@@ -225,7 +237,7 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
           </Button>
           <Typography width={30}>{counter}</Typography>
           <Button
-            onClick={() => setCounter(counter + 1)}
+            onClick={handleIncrement}
             sx={{
               color: "black",
               fontWeight: "bold",
@@ -236,7 +248,12 @@ const ProductInfoComp = ({ product }: ProductInfoCompProps) => {
         </Box>
 
         <Button
-          onClick={() => setfullPrice(counter * product.price?.regularPrice?.amount?.value!)}
+          onClick={() => {
+            setfullPrice(
+              counter * product.price?.regularPrice?.amount?.value! + fullPrice!
+            );
+            setCounter(1);
+          }}
           fullWidth
           sx={{
             fontWeight: "bold",

@@ -33,7 +33,6 @@ export default function SubCategories({ category, setShowSubCatBar, id,}: SubCat
         {products.slice(-5).map((subCategory, index) => (
           <Button
             key={index}
-            onClick={() => console.log(`Clicked on ${subCategory?.name}`)}
             style={{ color: "#231f20", fontSize: "14px" }}
           >
             {subCategory?.name}

@@ -1,38 +1,29 @@
 query Products {
-     cat110: products(
-    filter: { category_id: { eq: "110" } }
-    pageSize: 5
-  ) {
+  cat110: products(filter: { category_id: { eq: "110" } }, pageSize: 5) {
     ...ProductItems
   }
 
-  cat108: products(
-    filter: { category_id: { eq: "108" } }
-    pageSize: 5
-  ) {
+  cat108: products(filter: { category_id: { eq: "108" } }, pageSize: 5) {
     ...ProductItems
   }
 
-  cat109: products(
-    filter: { category_id: { eq: "109" } }
-    pageSize: 5
-  ) {
+  cat109: products(filter: { category_id: { eq: "109" } }, pageSize: 5) {
     ...ProductItems
   }
 }
 
 query AllProducts {
-     products(filter: { category_id: { in: ["110", "108", "109"] } }) {
-         items {
-            ...ProductItem
-         }
+  products(filter: { category_id: { in: ["110", "108", "109"] } }) {
+    items {
+      ...ProductItem
     }
+  }
 }
 
 query Product($sku: String!) {
   products(filter: { sku: { eq: $sku } }) {
     items {
-     sku
+      sku
       name
       image {
         url
@@ -45,23 +36,23 @@ query Product($sku: String!) {
         }
       }
       media_gallery {
-                url
+        url
       }
-     media_gallery_entries {
-                disabled
-                file
-                id
-                label
-                media_type
-                position
-                types
-                uid
-                content {
-                    base64_encoded_data
-                    name
-                    type
-                }
-            }
+      media_gallery_entries {
+        disabled
+        file
+        id
+        label
+        media_type
+        position
+        types
+        uid
+        content {
+          base64_encoded_data
+          name
+          type
+        }
+      }
       color
       dominant_color
       special_from_date
@@ -77,84 +68,89 @@ query Product($sku: String!) {
       print_pattern_swatch
       print_type
       type_id
+      description {
+        html
+      }
     }
   }
 }
 
 fragment ProductItems on Products {
   items {
-            sku
-            name
-            image {
-                url
-            }
-            price {
-                regularPrice {
-                    amount {
-                        value
-                    }
-                }
-            }
+    sku
+    name
+    image {
+      url
+    }
+    price {
+      regularPrice {
+        amount {
+          value
         }
+      }
+    }
+  }
 }
 
 fragment ProductItem on ProductInterface {
-   sku
+  sku
+  name
+  image {
+    url
+  }
+  price {
+    regularPrice {
+      amount {
+        value
+      }
+    }
+  }
+  media_gallery {
+    url
+  }
+  media_gallery_entries {
+    disabled
+    file
+    id
+    label
+    media_type
+    position
+    types
+    uid
+    content {
+      base64_encoded_data
       name
-      image {
-        url
-      }
-      price {
-        regularPrice {
-          amount {
-            value
-          }
-        }
-      }
-      media_gallery {
-                url
-      }
-      media_gallery_entries {
-                disabled
-                file
-                id
-                label
-                media_type
-                position
-                types
-                uid
-                content {
-                    base64_encoded_data
-                    name
-                    type
-                }
-            }
-      color
-      dominant_color
-      special_from_date
-      stock_status
-      updated_at
-      gift_message_available
-      print_art
-      print_holiday
-      print_labels
-      print_landmarks
-      print_landscape
-      print_mood
-      print_pattern_swatch
-      print_type
-      type_id
+      type
+    }
+  }
+  color
+  dominant_color
+  special_from_date
+  stock_status
+  updated_at
+  gift_message_available
+  print_art
+  print_holiday
+  print_labels
+  print_landmarks
+  print_landscape
+  print_mood
+  print_pattern_swatch
+  print_type
+  type_id
+  description {
+    html
+  }
 }
 
-fragment ReviewsItem on ProductReview {
-   average_rating
-                    created_at
-                    nickname
-                    summary
-                    text
-                    ratings_breakdown {
-                        name
-                        value
-                    }
-     
+fragment MediaGalleryEntry on ProductReview {
+  average_rating
+  created_at
+  nickname
+  summary
+  text
+  ratings_breakdown {
+    name
+    value
+  }
 }
