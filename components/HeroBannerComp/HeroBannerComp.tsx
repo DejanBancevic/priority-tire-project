@@ -5,12 +5,16 @@ import heroBanner from "../../public/heroBanner.webp";
 
 const HeroBannerComp = () => {
     return (
-        <div className="overflow-hidden">
+        <Box
+            sx={{
+                overflow: "hidden"
+            }}
+        >
             <Box
                 sx={{
                     width: "100%",
                     height: {
-                        xs: "calc(100vw / 1.77)",  
+                        xs: "calc(100vw / 1.77)",
                         md: 350
                     },
                     position: "relative",
@@ -23,7 +27,7 @@ const HeroBannerComp = () => {
                     className=' object-cover '
                 />
             </Box>
-        </div>
+        </Box>
     );
 };
 

@@ -8,6 +8,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import {
   Box,
   Button,
+  Collapse,
   InputBase,
   Link,
   useMediaQuery,
@@ -25,7 +26,7 @@ type HeaderProps = {
 
 };
 
-export default function Header({categories}: HeaderProps) {
+export default function Header({ categories }: HeaderProps) {
   const theme = useTheme();
   const mediaAdapter = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -35,7 +36,16 @@ export default function Header({categories}: HeaderProps) {
   const [showSubCatBar, setShowSubCatBar] = useState(false);
 
   return (
-    <div className="top-0 sticky flex flex-col left-0 z-[2000]">
+    <Box
+      sx={{
+        position: "sticky",
+        top: 0,
+        left: 0,
+        display: "flex",
+        flexDirection: "column",
+        zIndex: 2000,
+      }}
+    >
       {mediaAdapter ? (
         <Box
           sx={{
@@ -43,6 +53,7 @@ export default function Header({categories}: HeaderProps) {
             flexDirection: "column",
             borderBottom: 1,
             borderColor: "divider",
+
           }}
         >
           <Box
@@ -92,7 +103,8 @@ export default function Header({categories}: HeaderProps) {
             </Box>
           </Box>
 
-          {showSearchInput && (
+
+          <Collapse in={showSearchInput}>
             <InputBase
               placeholder="Search Tires & Accessories"
               fullWidth
@@ -102,24 +114,28 @@ export default function Header({categories}: HeaderProps) {
                 py: 1,
                 outline: "none",
                 zIndex: 1000,
+
               }}
             />
-          )}
+          </Collapse>
 
-          {showCategoriesBar && (
+
+          <Collapse in={showCategoriesBar} sx={{ zIndex: "1000" }}>
             <Categories
               categories={categories}
               setSelectedCategory={setSelectedCategory}
               setShowSubCatBar={setShowSubCatBar}
             />
-          )}
+          </Collapse>
 
-          {selectedCategory && showSubCatBar && (
-            <SubCategories
-              category={categories}
-              setShowSubCatBar={setShowSubCatBar}
-              id={selectedCategory}
-            />
+          {selectedCategory && (
+            <Collapse in={showSubCatBar}>
+              <SubCategories
+                category={categories}
+                setShowSubCatBar={setShowSubCatBar}
+                id={selectedCategory}
+              />
+            </Collapse>
           )}
 
         </Box>
@@ -171,18 +187,18 @@ export default function Header({categories}: HeaderProps) {
             setShowSubCatBar={setShowSubCatBar}
           />
 
-          {selectedCategory && showSubCatBar && (
-            <SubCategories
-              category={categories}
-              setShowSubCatBar={setShowSubCatBar}
-              id={selectedCategory}
-            />
-          )}
-
-
+            {selectedCategory && (
+              <Collapse in={showSubCatBar}>
+                <SubCategories
+                  category={categories}
+                  setShowSubCatBar={setShowSubCatBar}
+                  id={selectedCategory}
+                />
+              </Collapse>
+            )}
 
         </Box>
       )}
-    </div>
+    </Box>
   );
 }

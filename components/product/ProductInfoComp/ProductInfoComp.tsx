@@ -12,21 +12,21 @@ type ProductInfoCompProps = {
 const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
   const [selectedOption, setSelectedOption] = useState("");
   const [counter, setCounter] = useState(1);
-  const [fullPrice, setfullPrice] = useState(
-    product.price?.regularPrice?.amount?.value
-  );
+  const [cartCounter, setCartCounter] = useState(0);
+  const [fullPrice, setfullPrice] = useState(0);
   const [fullName, setFullName] = useState(product.name);
 
   const handleDecrement = () => {
-    setCounter((counter) => Math.max(1, counter - 1));
+    setCartCounter((prev) => {
+      const newCount = Math.max(0, prev - 1);
+      setfullPrice(product.price?.regularPrice?.amount?.value! * newCount);
+      return newCount;
+    });
   };
 
-  const handleIncrement = () => {
-    setCounter((counter) => counter + 1);
-  };
 
   return (
-    <div>
+    <Box>
       <Typography
         sx={{
           fontWeight: "bold",
@@ -42,7 +42,6 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
           display: "flex",
           gap: 2,
           alignItems: "center",
-          mt: 1,
         }}
       >
         <Box
@@ -104,17 +103,17 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
         sx={{
           justifyContent: "start",
           alignItems: "center",
-          gap: 2,
+          gap: {xs:1, md:5},
         }}
       >
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Box>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              pb: 1
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
+            <Typography sx={{ fontWeight: "bold", fontSize: 18, mt: 1.5, mr: 0.5 }}>
               from
             </Typography>
 
@@ -122,18 +121,19 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
               ${product.price?.regularPrice?.amount?.value}
             </Typography>
 
-            <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
+            <Typography sx={{ fontWeight: "bold", fontSize: 18, mt: 1.5 }}>
               /each
             </Typography>
           </Box>
-        </Grid>
+        </Box>
 
-        <Grid size={{ xs: 12, md: 6 }}>
+        <Box>
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
               gap: 1,
+              alignItems: "center",
+
             }}
           >
             <Typography sx={{ fontWeight: "bold" }}>
@@ -144,7 +144,7 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
               {product.stock_status === "IN_STOCK" ? "✓" : "X"}
             </Typography>
           </Box>
-        </Grid>
+        </Box>
       </Grid>
 
       <Grid
@@ -156,20 +156,67 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
           gap: 2,
         }}
       >
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <Box
             sx={{
               display: "flex",
+              flexWrap: "wrap",
               alignItems: "center",
+              justifyContent: "space-between",
+              p: 1.5,
+              borderRadius: 2,
+              boxShadow: "1",
             }}
           >
-            <Typography sx={{ fontWeight: "bold", fontSize: 20 }}>
-              Total Price:
-            </Typography>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
 
-            <Typography sx={{ fontWeight: "bold", fontSize: 30, ml: 1 }}>
-              ${String(fullPrice).slice(0, 5)}
-            </Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: 18, }}>
+                Total Price:
+              </Typography>
+
+              <Typography sx={{ fontWeight: 700, fontSize: 26, }}>
+                ${fullPrice.toFixed(2)}
+              </Typography>
+            </Box>
+
+            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Typography sx={{ fontWeight: 600, fontSize: 18, color: "#333" }}>
+                Quantity:
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  border: "1px solid #ccc",
+                  borderRadius: 1,
+                  overflow: "hidden",
+                  height: 40,
+                }}
+              >
+                <Button
+                  onClick={handleDecrement}
+                  sx={{
+                    minWidth: 40,
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    color:"black"
+                  }}
+                >
+                  -
+                </Button>
+                <Typography
+                  sx={{
+                    width: 40,
+                    textAlign: "center",
+                    fontSize: 18,
+                    backgroundColor: "#f9f9f9",
+                  }}
+                >
+                  {cartCounter}
+                </Typography>
+
+              </Box>
+            </Box>
           </Box>
         </Grid>
       </Grid>
@@ -224,10 +271,12 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
             alignItems: "center",
             gap: 1,
             border: 1,
+            borderColor: "#cbcfcb",
+            borderRadius: 1,
           }}
         >
           <Button
-            onClick={handleDecrement}
+            onClick={() => setCounter((counter) => Math.max(1, counter - 1))}
             sx={{
               color: "black",
               fontWeight: "bold",
@@ -237,7 +286,7 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
           </Button>
           <Typography width={30}>{counter}</Typography>
           <Button
-            onClick={handleIncrement}
+            onClick={() => setCounter((counter) => counter + 1)}
             sx={{
               color: "black",
               fontWeight: "bold",
@@ -253,6 +302,7 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
               counter * product.price?.regularPrice?.amount?.value! + fullPrice!
             );
             setCounter(1);
+            setCartCounter(cartCounter + counter)
           }}
           fullWidth
           sx={{
@@ -264,7 +314,7 @@ const ProductInfoComp = ({ product, setOption }: ProductInfoCompProps) => {
           ADD TO CART
         </Button>
       </Grid>
-    </div>
+    </Box>
   );
 };
 

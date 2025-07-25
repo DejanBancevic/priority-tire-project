@@ -21,7 +21,13 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
   const [selectedImage, setSelectedImage] = useState(product.image?.url);
 
   return (
-    <div className="flex flex-col justify-center">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+      }}
+    >
       <Card
         sx={{
           borderRadius: 2,
@@ -32,6 +38,7 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
             width: "100%",
             aspectRatio: "5 / 3",
             position: "relative",
+            bgcolor: "#f8f8f8",
           }}
         >
           <Image
@@ -43,9 +50,23 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
         </Box>
       </Card>
 
-      <div className="relative w-full md:px-12 px-20 mt-2">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex ">
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          px: { xs: 5, md: 3 }, 
+          mt: 2,
+        }}
+      >
+        <Box
+          sx={{ overflow: "hidden" }}
+          ref={emblaRef}
+        >
+          <Box
+            sx={{
+              display: "flex",
+            }}
+          >
             {product.media_gallery?.map((product, index) => (
               <div
                 key={index}
@@ -67,6 +88,7 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
                       width: "100%",
                       height: 180,
                       position: "relative",
+                      bgcolor: "#f8f8f8",
                     }}
                   >
                     <Image
@@ -79,9 +101,8 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
                 </Card>
               </div>
             ))}
-          </div>
-        </div>
-
+          </Box>
+        </Box>
         <Button
           onClick={scrollPrev}
           sx={{
@@ -117,8 +138,8 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
         >
           &gt;
         </Button>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 

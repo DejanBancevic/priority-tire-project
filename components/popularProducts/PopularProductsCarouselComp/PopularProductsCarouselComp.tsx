@@ -22,9 +22,20 @@ const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompPr
     const router = useRouter();
 
     return (
-      <div className="relative w-full md:px-20 px-4">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex ">
+      <Box
+        sx={{
+          position: "relative",
+          width: "100%",
+          px: { xs: 1, md: 5 },
+        }}
+      >
+        <Box
+          sx={{ overflow: "hidden" }}
+          ref={emblaRef}
+        >
+          <Box
+            sx={{ display: "flex" }}
+          >
             {products?.items?.map((product, index) => (
               <div
                 key={index}
@@ -50,7 +61,7 @@ const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompPr
                   }}
                 >
                   <Box
-                    sx={{ width: "100%", height: 200, position: "relative", bgcolor: "background.paper"}}
+                    sx={{ width: "100%", height: 200, position: "relative", bgcolor: "#f8f8f8"}}
                   >
                     <Image src={product?.image?.url ?? nokian} alt={product?.name ?? "Product Image"} fill objectFit='contain' />
                   </Box>
@@ -85,8 +96,8 @@ const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompPr
                 </Card>
               </div>
             ))}
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         <Button
           onClick={scrollPrev}
@@ -121,7 +132,7 @@ const PopularProductsCarouselComp = ({ products }: PopularProductsCarouselCompPr
         >
           &gt;
         </Button>
-      </div>
+      </Box>
     );
 }
 

@@ -14,35 +14,35 @@ type HomeProps = {
 export default function Home({ products }: HomeProps) {
 
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "white",
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          gap: 8,
-        }}
-      >
-        <HeroBannerComp />
 
-        <RebatesComp />
+    <Box
+      sx={{
+        backgroundColor: "white",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        gap: 8,
+      }}
+    >
+      <HeroBannerComp />
 
-        <PromotionsComp />
+      <RebatesComp />
 
-        <PopularProductComp products={products} />
+      <PromotionsComp />
 
-      </Box>
-    </>
+      <PopularProductComp products={products} />
+
+    </Box>
+
   );
 }
 
 export async function getServerSideProps() {
-  const { data : categoriesData } = await client.query({
+  const { data: categoriesData } = await client.query({
     query: CategoriesDocument,
   });
 
-  const { data : productsData} = await client.query({
+  const { data: productsData } = await client.query({
     query: ProductsDocument,
   });
 

@@ -4,8 +4,8 @@ query Categories {
     }
 }
 
-query SubCategories($ids: [String!]) {
-  categories(filters: { ids: { in: $ids } }) {
+query SubCategories($ids: String!) {
+  categories(filters: { ids: { eq: $ids } }) {
     items {
       id
       name
@@ -32,4 +32,16 @@ fragment CategoryItems on CategoryResult {
       }
     }
   }
+}
+
+fragment CategoryItem on CategoryTree{
+    id
+    name
+    product_count
+    products {
+      items {
+        name
+        id
+      }
+    }
 }

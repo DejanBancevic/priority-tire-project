@@ -18,9 +18,22 @@ const RebatesCarouselComp = ({ cards }: RebatesCarouselCompProps) => {
     const scrollNext = useCallback(() => emblaApi?.scrollNext(), [emblaApi])
 
     return (
-        <div className="relative w-full md:px-20 px-4">
-            <div className="overflow-hidden" ref={emblaRef}>
-                <div className="flex ">
+        <Box
+            sx={{
+                position: "relative",
+                width: "100%",
+                px: { xs: 1, md: 5 },
+            }}
+        >
+            <Box
+                sx={{ overflow: "hidden" }}
+                ref={emblaRef}
+            >
+                <Box
+                    sx={{
+                        display: "flex",
+                    }}
+                >
                     {cards.map((item, index) => (
                         <div
                             key={index}
@@ -91,8 +104,8 @@ const RebatesCarouselComp = ({ cards }: RebatesCarouselCompProps) => {
                     ))
                     }
 
-                </div>
-            </div>
+                </Box>
+            </Box>
 
             <Button
                 onClick={scrollPrev}
@@ -128,7 +141,7 @@ const RebatesCarouselComp = ({ cards }: RebatesCarouselCompProps) => {
                 &gt;
             </Button>
 
-        </div >
+        </Box>
     )
 }
 
