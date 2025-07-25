@@ -45,7 +45,7 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
             src={selectedImage ?? nokian}
             alt={"Product image"}
             fill
-            objectFit="contain"
+            style={{ objectFit: "contain" }}
           />
         </Box>
       </Card>
@@ -94,7 +94,7 @@ const ProductCarouselComp = ({ product }: ProductCarouselCompProps) => {
                     <Image
                       src={product?.url ?? nokian}
                       alt={product?.url ?? "Product Image"}
-                      objectFit="contain"
+                      style={{ objectFit: "contain" }}
                       fill
                     />
                   </Box>

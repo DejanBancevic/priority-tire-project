@@ -43,8 +43,8 @@ const PromotionsComp = () => {
                         <Image
                             src={PromoFirst}
                             alt="Promo Image"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            style={{ objectFit: "cover" }}
                         />
                         <Box
                             bgcolor={"#FFB634"}
@@ -93,8 +93,8 @@ const PromotionsComp = () => {
                         <Image
                             src={PromoSecond}
                             alt="Promo Image"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            style={{ objectFit: "cover" }}
                         />
                         <Box
                             bgcolor={"#FFB634"}
@@ -137,8 +137,8 @@ const PromotionsComp = () => {
                         <Image
                             src={PromoThird}
                             alt="Promo Image"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            style={{ objectFit: "cover" }}
                         />
                         <Button
 
